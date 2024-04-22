@@ -6,15 +6,20 @@ import axios from "axios";
 const URL = `http://api.weatherapi.com/v1/current.json?key=fccf4da15c4540afbf0173321242104&q=Indonesia&aqi=no`;
 
 const App = () => {
-  const [weatherData, setWeatherData] = useState({ temp_c: 0, humidity: 0, temp_f: 0 });
-  
+  const [weatherData, setWeatherData] = useState(0);
+  const [date, setDate] = useState("");
+
   const { isPending, error, isFetching } = useQuery({
-    queryFn: () => axios.get(URL).then((res) => {
+    queryFn: async () => await axios.get(URL).then((res) => {
       setWeatherData(res.data.current)
+      setDate(res.data.current)
       return res.data
     }),
     queryKey: ["weather"],
-  });
+    
+  }, console.log(weatherData));
+
+    
 
   if (isPending || isFetching) return 'Loading...';
   if (error) return 'An error has occurred: ' + error.message;
@@ -25,6 +30,7 @@ const App = () => {
       <p>Indonesia Temp Now : {weatherData.temp_c}</p>
       <p>Temp in Fahrenheit : {weatherData.temp_f}</p>
       <p>Humidity : {weatherData.humidity}</p>
+      <p>Last updated : {date.last_updated}</p>
     </div>
   );
 }
