@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Clock from "./components/Clock.jsx";
 
 const URL = `http://api.weatherapi.com/v1/current.json?key=fccf4da15c4540afbf0173321242104&q=Indonesia&aqi=no`;
 
@@ -17,21 +18,22 @@ const App = () => {
     }),
     queryKey: ["weather"],
     
-  }, console.log(weatherData));
-
-    
+  });
 
   if (isPending || isFetching) return 'Loading...';
   if (error) return 'An error has occurred: ' + error.message;
 
   return (
+    <>
     <div>
       <h1>Just my personal API Fetch</h1>
       <p>Indonesia Temp Now : {weatherData.temp_c}</p>
       <p>Temp in Fahrenheit : {weatherData.temp_f}</p>
       <p>Humidity : {weatherData.humidity}</p>
       <p>Last updated : {date.last_updated}</p>
+      <Clock />
     </div>
+    </>
   );
 }
 
